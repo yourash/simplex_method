@@ -23,8 +23,69 @@ int cozirniy_x=-1;
 int cozirniy_y=-1;
 
 int *array_of_answer_rows;
-int *array_of_answer_cols;
 
+
+
+void is_equal(int number)
+{
+
+	int a,b;
+	count_of_rows+=1;
+	obmezhennia+=1;
+	int *new_array_of_symbols=calloc(obmezhennia,sizeof(int));
+	for (int a = 0; a < obmezhennia; ++a)
+	{
+		new_array_of_symbols[a]=array_of_symbols[a];
+	}
+	free(array_of_symbols);
+	array_of_symbols=calloc(obmezhennia,sizeof(int));
+	for (int a = 0; a < obmezhennia; ++a)
+	{
+		array_of_symbols[a]=new_array_of_symbols[a];
+	}
+	array_of_symbols[number]=0;
+	array_of_symbols[number+1]=1;
+
+	int **new_coefs;
+
+	new_coefs=calloc(count_of_rows,sizeof(float*));
+	for (a=0; a < count_of_rows; a++)
+	{
+		new_coefs[a]=calloc(count_of_cols,sizeof(float));
+	}
+	for (a = 0; a < count_of_rows-1; ++a)
+	{
+		for (int b = 0; b < count_of_cols; ++b)
+		{
+			new_coefs[a][b]=coefs[a][b];
+		}
+	}
+	free(coefs);
+	coefs=calloc(count_of_rows,sizeof(float*));
+	for (a=0; a < count_of_rows; a++)
+	{
+		coefs[a]=calloc(count_of_cols,sizeof(float));
+	}
+	for (a = 0; a < count_of_rows-1; ++a)
+	{
+		for (int b = 0; b < count_of_cols; ++b)
+		{
+			coefs[a][b]=new_coefs[a][b];
+		}
+	}
+	free(new_coefs);
+	for (int a = 0; a < count_of_cols; ++a)
+	{
+		coefs[number+1][a]=coefs[number][a]*(-1);
+	}
+
+	free(old_coefs);
+	old_coefs=calloc(count_of_rows,sizeof(float*));
+	for (a=0; a < count_of_rows; a++)
+	{
+		old_coefs[a]=calloc(count_of_cols,sizeof(float));
+	}
+}
 
 void nedopustima()
 {
@@ -37,6 +98,23 @@ void nedopustima()
 void print_answer()
 {
 	printf("Відповідь: ");
+	int i,j;
+	for (i = 1; i < count_of_vars+1; ++i)
+	{
+		if(i!=0)
+		{
+			printf("+");
+		}
+		for (j = 0; j < obmezhennia; ++j)
+		{
+			if(array_of_answer_rows[j]==i)
+			{
+				printf("%f*x%i", coefs[j][count_of_cols-1],i);
+			}
+		}
+	}
+	printf("=");
+	printf("%f\n",coefs[count_of_rows-1][count_of_cols-1] );
 }
 
 void input()
@@ -104,7 +182,7 @@ void input()
 			printf("X%i=",j+1 );
 			scanf("%f",&coefs[i][j]);
 		}
-		printf("знак (0 - <=, 1 - >=):");
+		printf("знак (0 - <=, 1 - >=, 2 - ==):");
 		while(scanf("%i", &array_of_symbols[i])!=1 || (array_of_symbols[i]!=0 && array_of_symbols[i]!=1 && array_of_symbols[i]!=2))
 		{
 			printf("Неправильний ввід. Заново!\n");
@@ -115,6 +193,11 @@ void input()
 		{
 			printf("Неправильний ввід. Заново!\n");
 			__fpurge(stdin);
+		}
+		if(array_of_symbols[i]==2)
+		{
+			is_equal(i);
+			i+=1;
 		}
 	}
 	for (i = 0; i < count_of_vars; ++i)
@@ -236,7 +319,7 @@ void recount()
 			coefs[i][cozirniy_x]=0;
 		}
 	}
-	for (int i = 0; i < count_of_rows; ++i)
+	for (i = 0; i < count_of_rows; ++i)
 	{
 		for (j = 0; j < count_of_cols; ++j)
 		{
@@ -263,7 +346,6 @@ void simplex()
 		{
 			if(coefs[count_of_rows-1][i]<0)
 			{
-				printf("%f\n", coefs[count_of_rows-1][i]);
 				if(coefs[count_of_rows-1][i]<aim_element)
 				{
 					aim_element=coefs[count_of_rows-1][i];
