@@ -256,7 +256,7 @@ void canonical_table()
 	{
 		if(array_of_symbols[i]==1)
 		{
-			for (int j = 0; j < count_of_cols; ++j)
+			for (j = 0; j < count_of_cols; ++j)
 			{
 				coefs[i][j]*=(-1);
 			}
@@ -303,7 +303,7 @@ void recount()
 	int i,j;
 	for (i = 0; i < count_of_rows; ++i)
 	{
-		for (int j = 0; j < count_of_cols; ++j)
+		for (j = 0; j < count_of_cols; ++j)
 		{
 			old_coefs[i][j]=coefs[i][j];
 		}
