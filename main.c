@@ -33,13 +33,13 @@ void is_equal(int number)
 	count_of_rows+=1;
 	obmezhennia+=1;
 	int *new_array_of_symbols=calloc(obmezhennia,sizeof(int));
-	for (int a = 0; a < obmezhennia; ++a)
+	for (a = 0; a < obmezhennia; ++a)
 	{
 		new_array_of_symbols[a]=array_of_symbols[a];
 	}
 	free(array_of_symbols);
 	array_of_symbols=calloc(obmezhennia,sizeof(int));
-	for (int a = 0; a < obmezhennia; ++a)
+	for (a = 0; a < obmezhennia; ++a)
 	{
 		array_of_symbols[a]=new_array_of_symbols[a];
 	}
@@ -55,7 +55,7 @@ void is_equal(int number)
 	}
 	for (a = 0; a < count_of_rows-1; ++a)
 	{
-		for (int b = 0; b < count_of_cols; ++b)
+		for (b = 0; b < count_of_cols; ++b)
 		{
 			new_coefs[a][b]=coefs[a][b];
 		}
@@ -68,13 +68,13 @@ void is_equal(int number)
 	}
 	for (a = 0; a < count_of_rows-1; ++a)
 	{
-		for (int b = 0; b < count_of_cols; ++b)
+		for (b = 0; b < count_of_cols; ++b)
 		{
 			coefs[a][b]=new_coefs[a][b];
 		}
 	}
 	free(new_coefs);
-	for (int a = 0; a < count_of_cols; ++a)
+	for (a = 0; a < count_of_cols; ++a)
 	{
 		coefs[number+1][a]=coefs[number][a]*(-1);
 	}
@@ -293,6 +293,11 @@ int possibility()
 	return 1;
 }
 
+void compare()
+{
+	
+}
+
 void recount()
 {
 	int i,j;
@@ -376,6 +381,10 @@ void simplex()
 				{
 					divide_value=coefs[i][count_of_cols-1]/coefs[i][cozirniy_x];
 					cozirniy_y=i;
+				}
+				else if(coefs[i][count_of_cols-1]/coefs[i][cozirniy_x]==divide_value && coefs[i][count_of_cols-1]/coefs[i][cozirniy_x]>=0)
+				{
+					compare();
 				}
 			}
 			print_table();
