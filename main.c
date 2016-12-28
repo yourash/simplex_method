@@ -99,19 +99,28 @@ void print_answer()
 {
 	printf("Відповідь: ");
 	int i,j;
+	int was_not_here=1;
 	for (i = 1; i < count_of_vars+1; ++i)
 	{
-		if(i!=0)
-		{
-			printf("+");
-		}
 		for (j = 0; j < obmezhennia; ++j)
 		{
 			if(array_of_answer_rows[j]==i)
 			{
-				printf("%f*x%i", coefs[j][count_of_cols-1],i);
+				printf("%f*", coefs[j][count_of_cols-1]);
+				was_not_here=0;
 			}
 		}
+		if(was_not_here)
+		{
+			printf("0.000000*");
+		}
+		was_not_here=1;
+		printf("x%i",i );
+		if(i!=count_of_vars)
+		{
+			printf("+");
+		}
+
 	}
 	printf("=");
 	printf("%f\n",coefs[count_of_rows-1][count_of_cols-1] );
